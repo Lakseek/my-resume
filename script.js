@@ -48,17 +48,42 @@
 		});
 	});
 
-	// IntersectionObserver for section in view
-	const observer = new IntersectionObserver((entries)=>{
+	// IntersectionObserver for section in view — use ratios to pick the most visible section.
+	// This is more robust when header is sticky or sections have varying heights.
+	const visibility = new Map();
+	const observer = new IntersectionObserver((entries) => {
 		entries.forEach(entry => {
-			const id = entry.target.id;
-			const link = document.querySelector('.main-nav a[href="#'+id+'"]');
-			if(entry.isIntersecting){
-				navLinks.forEach(n=>n.classList.remove('active'));
-				if(link) link.classList.add('active');
-			}
+			visibility.set(entry.target.id, entry.intersectionRatio || 0);
 		});
-	},{root:null,rootMargin:'-20% 0px -55% 0px',threshold:0});
 
-	sections.forEach(s => observer.observe(s));
+		// pick section id with highest intersectionRatio
+		let bestId = null;
+		let bestRatio = 0;
+		for (const [id, ratio] of visibility.entries()) {
+			if (ratio > bestRatio) {
+				bestRatio = ratio;
+				bestId = id;
+			}
+		}
+
+		if (bestId) {
+			navLinks.forEach(n => n.classList.remove('active'));
+			const bestLink = document.querySelector('.main-nav a[href="#' + bestId + '"]');
+			if (bestLink) bestLink.classList.add('active');
+		}
+	}, { root: null, rootMargin: '-10% 0px -40% 0px', threshold: [0, 0.1, 0.25, 0.5, 0.75] });
+
+	sections.forEach(s => {
+		visibility.set(s.id, 0);
+		observer.observe(s);
+	});
+  
+	// Make header visually adapt when scrolled (add .scrolled when page is not at top)
+	const header = document.querySelector('.site-header');
+	function onScroll(){
+		if(window.scrollY > 8) header.classList.add('scrolled');
+		else header.classList.remove('scrolled');
+	}
+	window.addEventListener('scroll', onScroll, {passive:true});
+	onScroll();
 })();

@@ -36,6 +36,12 @@ html{scroll-behavior:smooth}
 	background:linear-gradient(90deg, rgba(14,165,164,0.08), rgba(9,146,146,0.04));
 	padding:2.25rem 0;
 	border-bottom:1px solid var(--glass);
+	position:sticky;
+	top:0;
+	z-index:800;
+	/* subtle backdrop so content under header blurs when sticky */
+	-webkit-backdrop-filter: blur(6px);
+	backdrop-filter: blur(6px);
 }
 .site-title{margin:0;font-size:1.6rem}
 .site-subtitle{margin:0.35rem 0 1rem;color:var(--muted)}
@@ -55,6 +61,8 @@ html{scroll-behavior:smooth}
 .main-nav a.active{
 	background:var(--accent-600);
 	color:white;
+	box-shadow:0 6px 18px rgba(2,6,23,0.12);
+	transform:translateY(-1px);
 }
 
 /* Sections */
@@ -120,17 +128,28 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 
 /* theme toggle button */
 .theme-toggle{
-	margin-left:0.6rem;
-	background:transparent;
+	/* float fixed in bottom-right so it's always visible */
+	position:fixed;
+	right:1rem;
+	bottom:1rem;
+	margin:0;
+	background:var(--surface);
 	border:1px solid rgba(2,6,23,0.06);
-	padding:0.35rem 0.6rem;
-	border-radius:8px;
+	padding:0.6rem 0.7rem;
+	border-radius:999px;
 	cursor:pointer;
-	font-size:1rem;
+	font-size:1.1rem;
 	line-height:1;
+	box-shadow:0 8px 30px rgba(2,6,23,0.08);
+	z-index:1200;
 }
-.theme-toggle:hover{transform:translateY(-1px);}
+.theme-toggle:hover{transform:translateY(-2px);}
 .theme-toggle:focus{outline:3px solid rgba(14,165,164,0.12);outline-offset:3px}
+
+/* smaller on very small screens */
+@media (max-width:420px){
+	.theme-toggle{right:0.6rem;bottom:0.6rem;padding:0.5rem}
+}
 
 /* Dark theme: follow system preference */
 @media (prefers-color-scheme: dark){
