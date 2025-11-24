@@ -356,8 +356,9 @@ html[data-theme="dark"]{
 	--glass: rgba(230,240,247,0.04);
 }
 
-/* Additional responsive breakpoint for medium screens */
-@media (max-width:900px){
+/* Additional responsive breakpoint for medium screens (601px - 900px):
+   keep <=600px as single-column, use 2 columns for medium widths */
+@media (min-width:601px) and (max-width:900px){
 	.skill-list{grid-template-columns:repeat(2,1fr)}
 	.projects{grid-template-columns:repeat(2,1fr)}
 }
