@@ -36,10 +36,13 @@ html{scroll-behavior:smooth}
 	background:linear-gradient(90deg, rgba(14,165,164,0.08), rgba(9,146,146,0.04));
 	padding:2.25rem 0;
 	border-bottom:1px solid var(--glass);
-	position:sticky;
-	top:0;
-	z-index:800;
-	/* subtle backdrop so content under header blurs when sticky */
+	position:fixed; /* always fixed at top */
+	left:0;right:0;top:0;
+	z-index:900;
+	width:100%;
+	transform:translateY(0);
+	transition:transform .28s ease, box-shadow .18s ease;
+	/* subtle backdrop so content under header blurs when fixed */
 	-webkit-backdrop-filter: blur(6px);
 	backdrop-filter: blur(6px);
 }
@@ -69,6 +72,9 @@ html{scroll-behavior:smooth}
 .section{padding:2rem 0;border-bottom:1px solid var(--glass)}
 .section:last-of-type{border-bottom:0}
 .section h2{margin:0 0 0.75rem;font-size:1.25rem}
+
+/* ensure anchor targets are scrolled into view below the sticky header */
+.section{scroll-margin-top:var(--header-height,88px)}
 
 /* Skills grid */
 .skill-list{
@@ -131,24 +137,60 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 	/* float fixed in bottom-right so it's always visible */
 	position:fixed;
 	right:1rem;
-	bottom:1rem;
+	/* lift slightly so it doesn't cover inline content */
+	bottom:2rem;
 	margin:0;
 	background:var(--surface);
 	border:1px solid rgba(2,6,23,0.06);
-	padding:0.6rem 0.7rem;
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	height:44px;
+	padding:0 0.85rem;
 	border-radius:999px;
 	cursor:pointer;
-	font-size:1.1rem;
+	font-size:1rem;
 	line-height:1;
 	box-shadow:0 8px 30px rgba(2,6,23,0.08);
 	z-index:1200;
+	white-space:nowrap;
 }
-.theme-toggle:hover{transform:translateY(-2px);}
+.theme-toggle:hover{transform:translateY(-2px);} 
 .theme-toggle:focus{outline:3px solid rgba(14,165,164,0.12);outline-offset:3px}
+
+/* header toggle (show/hide header) placed next to theme toggle */
+.header-toggle{
+	position:fixed;
+	right:4.6rem; /* to the left of theme-toggle */
+	/* match theme-toggle lift so both stay aligned */
+	bottom:2rem;
+	background:var(--surface);
+	border:1px solid rgba(2,6,23,0.06);
+	display:inline-flex;
+	align-items:center;
+	justify-content:center;
+	height:44px;
+	padding:0 0.85rem;
+	border-radius:999px;
+	cursor:pointer;
+	font-size:1rem;
+	box-shadow:0 8px 30px rgba(2,6,23,0.08);
+	z-index:1201;
+	white-space:nowrap;
+}
+.header-toggle:hover{transform:translateY(-2px)}
+.header-toggle:focus{outline:3px solid rgba(14,165,164,0.12);outline-offset:3px}
+
+/* when header is hidden, slide it up; pointer-events none to let clicks pass through header area */
+.site-header.hidden{transform:translateY(-120%);pointer-events:none}
+
+/* Make sure body content sits below the fixed header using the dynamic header height */
+body{padding-top:var(--header-height,88px)}
 
 /* smaller on very small screens */
 @media (max-width:420px){
-	.theme-toggle{right:0.6rem;bottom:0.6rem;padding:0.5rem}
+	.theme-toggle{right:0.6rem;bottom:1rem;padding:0 0.6rem;height:40px}
+	.header-toggle{right:3.2rem;bottom:1rem;padding:0 0.6rem;height:40px}
 }
 
 /* Dark theme: follow system preference */

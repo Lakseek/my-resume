@@ -20,8 +20,6 @@
 						<li><a class="nav-link" href="#contact">聯絡</a></li>
 					</ul>
 				</nav>
-				<!-- 主題切換按鈕（支援系統偏好 + 手動切換） -->
-				<button id="theme-toggle" class="theme-toggle" aria-label="切換主題" aria-pressed="false">🌙</button>
 			</div>
 		</header>
 
@@ -105,6 +103,11 @@
 		</footer>
 
 		<script src="script.js"></script>
+
+		<!-- floating controls (theme + header toggle) placed outside header so they're always visible -->
+		<button id="header-toggle" class="header-toggle" aria-label="顯示或隱藏頂欄" aria-pressed="true">隱藏頂欄</button>
+		<button id="theme-toggle" class="theme-toggle" aria-label="切換主題" aria-pressed="false">🌙</button>
+
 		<script>
 			document.getElementById('year').textContent = new Date().getFullYear();
 		</script>
