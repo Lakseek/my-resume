@@ -155,7 +155,6 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 	z-index:1200;
 	white-space:nowrap;
 }
-.theme-toggle:hover{transform:translateY(-2px);} 
 .theme-toggle:focus{outline:3px solid rgba(14,165,164,0.12);outline-offset:3px}
 
 /* header toggle (show/hide header) placed next to theme toggle */
@@ -178,11 +177,151 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 	z-index:1201;
 	white-space:nowrap;
 }
-.header-toggle:hover{transform:translateY(-2px)}
 .header-toggle:focus{outline:3px solid rgba(14,165,164,0.12);outline-offset:3px}
 
 /* when header is hidden, slide it up; pointer-events none to let clicks pass through header area */
 .site-header.hidden{transform:translateY(-120%);pointer-events:none}
+
+/* Tooltips for floating buttons (uses data-tooltip attr) */
+.theme-toggle[data-tooltip], .header-toggle[data-tooltip]{
+	position:fixed; /* keep existing fixed positioning on the element itself */
+}
+.theme-toggle[data-tooltip]::after,
+.header-toggle[data-tooltip]::after{
+	content: attr(data-tooltip);
+	position: absolute; /* positioned relative to the fixed button */
+	bottom: calc(100% + 10px);
+	left: 50%;
+	transform: translateX(-50%) translateY(-4px);
+	background: var(--surface);
+	color: var(--text);
+	padding:6px 8px;
+	border-radius:6px;
+	box-shadow:0 8px 24px rgba(2,6,23,0.12);
+	font-size:0.9rem;
+	white-space:nowrap;
+	max-width: calc(100vw - 3rem);
+	display:inline-block;
+	overflow:hidden;
+	text-overflow:ellipsis;
+	text-align:center;
+	opacity:0;
+	pointer-events:none;
+	transition:opacity .12s ease, transform .12s ease;
+	z-index:1300;
+}
+.theme-toggle[data-tooltip]::before,
+.header-toggle[data-tooltip]::before{
+	content: '';
+	position: absolute;
+	bottom: calc(100% + 4px);
+	left: 50%;
+	transform: translateX(-50%);
+	width:0;height:0;
+	border-left:6px solid transparent;
+	border-right:6px solid transparent;
+	border-top:6px solid var(--surface);
+	opacity:0;
+	transition:opacity .12s ease;
+	z-index:1300;
+}
+
+/* show tooltip on focus (keyboard) for accessibility */
+.theme-toggle[data-tooltip]:focus::after,
+.theme-toggle[data-tooltip]:focus::before,
+.theme-toggle[data-tooltip]:focus-visible::after,
+.theme-toggle[data-tooltip]:focus-visible::before,
+.header-toggle[data-tooltip]:focus::after,
+.header-toggle[data-tooltip]:focus::before,
+.header-toggle[data-tooltip]:focus-visible::after,
+.header-toggle[data-tooltip]:focus-visible::before{
+	opacity:1;
+}
+
+/* Enable hover-based tooltips only on devices that support hover (desktop) */
+@media (hover: hover) and (pointer: fine) {
+	.theme-toggle[data-tooltip]:hover::after,
+	.theme-toggle[data-tooltip]:hover::before,
+	.header-toggle[data-tooltip]:hover::after,
+	.header-toggle[data-tooltip]:hover::before{
+		opacity:1;
+	}
+	/* hover transform for floating buttons only on hover-capable devices */
+	.theme-toggle:hover,
+	.header-toggle:hover{
+		transform:translateY(-2px);
+	}
+}
+
+/* Prevent floating button tooltip from overflowing the viewport on narrow screens */
+@media (max-width:520px){
+	.theme-toggle[data-tooltip]::after,
+	.header-toggle[data-tooltip]::after{
+		left: auto;
+		right: 0.6rem;
+		transform: translateX(0) translateY(-4px);
+		text-align:right;
+	}
+	.theme-toggle[data-tooltip]::before,
+	.header-toggle[data-tooltip]::before{
+		left: auto; right: 1.05rem; transform: translateX(0);
+	}
+}
+
+/* Tooltips for inline links in the contact section */
+.contact a[data-tooltip]{
+	position:relative;
+}
+.contact a[data-tooltip]::after{
+	content: attr(data-tooltip);
+	position:absolute;
+	bottom: calc(100% + 8px);
+	left: 50%;
+	transform: translateX(-50%);
+	background: var(--surface);
+	color: var(--text);
+	padding:6px 8px;
+	border-radius:6px;
+	box-shadow:0 8px 24px rgba(2,6,23,0.08);
+	font-size:0.85rem;
+	white-space:nowrap;
+	display:inline-block;
+	max-width: calc(100vw - 3rem);
+	overflow:hidden;
+	text-overflow:ellipsis;
+	opacity:0;
+	pointer-events:none;
+	transition:opacity .12s ease, transform .12s ease;
+	z-index:1100;
+}
+.contact a[data-tooltip]::before{
+	content:'';
+	position:absolute;
+	bottom: calc(100% + 4px);
+	left:50%;
+	transform: translateX(-50%);
+	width:0;height:0;
+	border-left:5px solid transparent;
+	border-right:5px solid transparent;
+	border-top:5px solid var(--surface);
+	opacity:0;
+	transition:opacity .12s ease;
+}
+/* show inline link tooltip on focus for accessibility */
+.contact a[data-tooltip]:focus::after,
+.contact a[data-tooltip]:focus::before,
+.contact a[data-tooltip]:focus-visible::after,
+.contact a[data-tooltip]:focus-visible::before{
+	opacity:1;
+}
+
+/* Hover tooltips for inline links only on hover-capable devices */
+@media (hover: hover) and (pointer: fine) {
+	.contact a[data-tooltip]:hover::after,
+	.contact a[data-tooltip]:hover::before{
+		opacity:1;
+	}
+}
 
 /* Make sure body content sits below the fixed header using the dynamic header height */
 body{padding-top:var(--header-height,88px)}

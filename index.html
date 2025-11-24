@@ -37,8 +37,8 @@
 				<h2 id="skills-heading">技能</h2>
 				<ul class="skill-list">
 					<li><strong>電腦硬體：</strong>能夠從無到有組出一台電腦，雖然不一定能一次就成功開機。</li>
-					<li><strong>手機挑選：</strong>能夠根據需求幫朋友挑出適合他的手機</li>
-					<li><strong>節奏遊戲：</strong>有豐富的平板節奏遊戲經驗，不過這算特殊技能嗎（？）</li>
+					<li><strong>手機挑選：</strong>能夠根據需求幫朋友挑出適合他的手機。</li>
+					<li><strong>節奏遊戲：</strong>有豐富的平板節奏遊戲經驗，不過這算特殊技能嗎（？）。</li>
 				</ul>
 			</section>
 
@@ -89,9 +89,10 @@
 			<!-- Contact -->
 			<section id="contact" class="section contact" aria-labelledby="contact-heading">
 				<h2 id="contact-heading">聯絡方式</h2>
-				<p>電子郵件：<a href="mailto:414570502@m365.fju.edu.tw">414570502@m365.fju.edu.tw</a></p>
+				<p>電子郵件（學校）：<a href="mailto:414570502@m365.fju.edu.tw" data-tooltip="點擊來發送訊息至電子郵件（學校）">414570502@m365.fju.edu.tw</a></p>
+		        <p>電子郵件（個人）：<a href="mailto:johnsonwu0618@gmail.com" data-tooltip="點擊來發送訊息至電子郵件（個人）">johnsonwu0618@gmail.com</a></p>
 				<p>GitHub：
-					<a href="https://github.com/Lakseek" target="_blank" rel="noopener noreferrer">Lakseek</a>
+					<a href="https://github.com/Lakseek" target="_blank" rel="noopener noreferrer" data-tooltip="點擊來移動到 GitHub 頁面">Lakseek</a>
 				</p>
 			</section>
 		</main>
@@ -104,9 +105,8 @@
 
 		<script src="script.js"></script>
 
-		<!-- floating controls (theme + header toggle) placed outside header so they're always visible -->
-		<button id="header-toggle" class="header-toggle" aria-label="顯示或隱藏頂欄" aria-pressed="true">隱藏頂欄</button>
-		<button id="theme-toggle" class="theme-toggle" aria-label="切換主題" aria-pressed="false">🌙</button>
+		<button id="header-toggle" class="header-toggle" aria-label="顯示或隱藏頂欄" aria-pressed="true" data-tooltip="顯示或隱藏頂欄">隱藏頂欄</button>
+		<button id="theme-toggle" class="theme-toggle" aria-label="切換主題" aria-pressed="false" data-tooltip="切換主題">🌙</button>
 
 		<script>
 			document.getElementById('year').textContent = new Date().getFullYear();
