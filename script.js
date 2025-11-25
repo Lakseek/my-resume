@@ -13,7 +13,7 @@
 
 		function apply(dark){
 			if(dark) html.setAttribute('data-theme','dark');
-			else html.removeAttribute('data-theme');
+			else html.setAttribute('data-theme','light');
 			if(toggle){
 				toggle.textContent = dark ? '☀️' : '🌙';
 				toggle.setAttribute('aria-pressed', dark ? 'true' : 'false');
