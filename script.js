@@ -195,3 +195,48 @@
 	// initial
 	updateHeaderHeight();
 })();
+
+
+// Tag cloud: size tags by `data-weight` and reveal when the section is visible
+(function(){
+	function initTagCloud(){
+		const cloud = document.querySelector('.tag-cloud');
+		if(!cloud) return;
+
+		const tags = Array.from(cloud.querySelectorAll('.tag'));
+		if(tags.length === 0) return;
+
+		// weight is expected 1..10 — map to font-size between min and max (rem)
+		const minSize = 0.9; // rem
+		const maxSize = 1.8; // rem
+
+		tags.forEach(tag => {
+			const w = Math.max(1, Math.min(10, Number(tag.getAttribute('data-weight') || 5)));
+			const size = minSize + ( (w - 1) / 9 ) * (maxSize - minSize);
+			tag.style.fontSize = size + 'rem';
+
+			// subtle color intensity based on weight
+			const alpha = 0.6 + ((w - 1) / 9) * 0.35; // 0.6 .. 0.95
+			tag.style.background = `linear-gradient(180deg, rgba(14,165,164,${alpha*0.08}), rgba(9,146,146,${alpha*0.03}))`;
+			tag.style.border = '1px solid rgba(2,6,23,0.04)';
+		});
+
+		// Reveal tags when the skills section enters viewport
+		const section = document.getElementById('skills');
+		if(!section) { tags.forEach(t=>t.classList.add('visible')); return; }
+
+		const io = new IntersectionObserver((entries, obs)=>{
+			entries.forEach(entry => {
+				if(entry.isIntersecting){
+					tags.forEach((t, i) => setTimeout(()=> t.classList.add('visible'), i * 60));
+					obs.disconnect();
+				}
+			});
+		}, {threshold: 0.12});
+
+		io.observe(section);
+	}
+
+	if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initTagCloud);
+	else initTagCloud();
+})();
