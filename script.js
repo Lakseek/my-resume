@@ -220,3 +220,87 @@
 	if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initSkillProgress);
 	else initSkillProgress();
 })();
+
+
+/* Timeline: render from data array and add entrance animations */
+(function(){
+	const experiences = [
+		{
+			title: 'Python 選修課 - 永春高中',
+			start: '2022',
+			end: null,
+			periodLabel: '高一上學期',
+			description: '忘記課程的名稱是什麼了，大概就是簡單的學習 Python，並且做出自己的軟體（我記得我是做出一個溫標轉換器）。'
+		},
+		{
+			title: '資訊研究社 - 永春高中',
+			start: '2022',
+			end: '2023',
+			periodLabel: '高一至高二',
+			description: '在資訊研究社中學習到了 App Inventor，不過只是簡單介紹，當時的社課認真聽的人很少所以進度很慢。'
+		},
+		{
+			title: '資訊科技 - 永春高中',
+			start: '2023',
+			end: '2025',
+			periodLabel: '高二至高三',
+			description: '資訊科技課有學過 C++，並且有寫出一個筆記 App，那時的檔案也還留著。'
+		}
+	];
+
+	function createItem(exp){
+		const article = document.createElement('article');
+		article.className = 'timeline-item';
+
+		const h3 = document.createElement('h3');
+		h3.textContent = exp.title;
+		article.appendChild(h3);
+
+		const meta = document.createElement('p');
+		meta.className = 'meta';
+		if(exp.end){
+			meta.innerHTML = `<time datetime="${exp.start}">${exp.start}</time> - <time datetime="${exp.end}">${exp.end}</time> · ${exp.periodLabel}`;
+		} else {
+			meta.innerHTML = `<time datetime="${exp.start}">${exp.start}</time> · ${exp.periodLabel}`;
+		}
+		article.appendChild(meta);
+
+		const p = document.createElement('p');
+		p.textContent = exp.description;
+		article.appendChild(p);
+
+		return article;
+	}
+
+	function renderTimeline(){
+		const container = document.getElementById('timeline');
+		if(!container) return;
+		// clear existing
+		container.innerHTML = '';
+		experiences.forEach(exp => container.appendChild(createItem(exp)));
+
+		// entrance observer
+		const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const items = Array.from(container.querySelectorAll('.timeline-item'));
+
+		if(prefersReduced){
+			items.forEach(i => i.classList.add('in-view'));
+			return;
+		}
+
+		const io = new IntersectionObserver((entries)=>{
+			entries.forEach(en => {
+				if(en.isIntersecting){
+					en.target.classList.add('in-view');
+					// optional: unobserve once visible
+					io.unobserve(en.target);
+				}
+			});
+		}, {root: null, rootMargin: '0px 0px -10% 0px', threshold: 0.12});
+
+		items.forEach(i => io.observe(i));
+	}
+
+	if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', renderTimeline);
+	else renderTimeline();
+})();
