@@ -105,9 +105,60 @@ html{scroll-behavior:smooth}
 	.progress{height:14px}
 }
 
-/* Timeline / Experience */
-.timeline{display:block}
-.timeline-item{background:var(--surface);padding:1rem;border-radius:8px;margin-bottom:0.9rem;box-shadow:0 1px 2px rgba(2,6,23,0.04)}
+.timeline{
+	position:relative;
+	padding:1.25rem 0 1.25rem 4rem; /* leave space for line and marker */
+}
+
+.timeline::before{
+	/* vertical line */
+	content: '';
+	position: absolute;
+	left: 28px;
+	top: 0;
+	bottom: 0;
+	width: 3px;
+	background: linear-gradient(180deg, rgba(2,6,23,0.04), rgba(2,6,23,0.02));
+	border-radius: 2px;
+}
+
+.timeline-item{
+	position:relative;
+	background:var(--surface);
+	padding:1rem 1rem 1rem 1rem;
+	border-radius:8px;
+	margin-bottom:1.1rem;
+	box-shadow:0 1px 2px rgba(2,6,23,0.04);
+}
+
+.timeline-item::before{
+	/* marker */
+	content: '';
+	position: absolute;
+	left: 16px; /* sits centered on the vertical line */
+	top: 18px;
+	width:14px;
+	height:14px;
+	border-radius:50%;
+	background:var(--accent);
+	border:3px solid var(--surface);
+	box-shadow:0 4px 10px rgba(2,6,23,0.06);
+}
+
+.timeline-item .meta{color:var(--muted);font-size:0.9rem;margin:0.25rem 0}
+
+/* On small screens keep a single-column vertical timeline */
+@media (max-width:900px){
+	.timeline{padding-left:3.5rem}
+	.timeline::before{left:28px}
+	.timeline-item::before{left:16px}
+}
+
+/* Slightly tighter spacing on very small phones */
+@media (max-width:420px){
+	.timeline{padding-left:3rem}
+	.timeline-item::before{top:16px;width:12px;height:12px;left:12px}
+}
 .timeline-item .meta{color:var(--muted);font-size:0.9rem;margin:0.25rem 0}
 
 /* Projects */
